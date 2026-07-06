@@ -1,0 +1,10 @@
+# VoiceFlow — Python 3.11+
+faster-whisper>=1.0.0
+onnxruntime>=1.16      # runs the bundled Silero VAD model (also used by faster-whisper)
+sounddevice>=0.4.6
+pynput>=1.7.6
+pyperclip>=1.8.2
+PyQt6>=6.6
+numpy>=1.24
+truststore>=0.9        # use Windows cert store (corporate TLS-inspection proxies)
+pyinstaller>=6.3       # build-time only (needed by build.bat)
