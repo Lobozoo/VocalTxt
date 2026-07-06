@@ -5,7 +5,7 @@ The VAD runs Silero's ONNX model directly via onnxruntime (which is already a
 faster-whisper dependency) instead of the silero-vad pip package — that
 package drags in torch (~2.5 GB installed, hundreds of MB of RAM) to run a
 2 MB model. The model file silero_vad.onnx ships alongside the app; if
-missing, it is downloaded once to %APPDATA%\VoiceFlow.
+missing, it is downloaded once to %APPDATA%\EchoScribe.
 
 Pipeline:
   * sounddevice InputStream @ 16 kHz / mono / float32, blocksize 512
@@ -46,7 +46,7 @@ _SILERO_URL = (
 
 def _vad_model_path() -> str:
     """Find silero_vad.onnx: next to the app (or inside the PyInstaller
-    bundle), else download once to %APPDATA%\\VoiceFlow."""
+    bundle), else download once to %APPDATA%\\EchoScribe."""
     base = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
     bundled = os.path.join(base, "silero_vad.onnx")
     if os.path.exists(bundled):

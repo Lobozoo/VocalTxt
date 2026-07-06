@@ -1,5 +1,5 @@
 """
-tray.py — PyQt6 system tray icon (idle / recording / processing) + Settings dialog.
+tray.py — PySide6 system tray icon (idle / recording / processing) + Settings dialog.
 
 Icons are drawn programmatically with QPainter so no image assets need to be
 bundled into the EXE. The processing state cycles through rotated arc frames
@@ -12,9 +12,9 @@ sides always agree on what e.g. "Ctrl+Alt+Space" means.
 
 import logging
 
-from PyQt6.QtCore import Qt, QTimer, pyqtSignal
-from PyQt6.QtGui import QColor, QIcon, QPainter, QPen, QPixmap
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt, QTimer, Signal
+from PySide6.QtGui import QColor, QIcon, QPainter, QPen, QPixmap
+from PySide6.QtWidgets import (
     QCheckBox, QComboBox, QDialog, QFormLayout, QHBoxLayout, QLabel,
     QLineEdit, QListWidget, QMessageBox, QPushButton, QTabWidget,
     QTextBrowser, QWidget,
@@ -61,10 +61,10 @@ SPINNER_FRAMES: list[QIcon] = []
 
 
 def _find_ico() -> str | None:
-    """Locate voiceflow.ico: next to the script, or inside PyInstaller bundle."""
+    """Locate echoscribe.ico: next to the script, or inside PyInstaller bundle."""
     import sys, os
     for base in (getattr(sys, "_MEIPASS", ""), os.path.dirname(os.path.abspath(__file__))):
-        p = os.path.join(base, "voiceflow.ico")
+        p = os.path.join(base, "echoscribe.ico")
         if os.path.exists(p):
             return p
     return None
@@ -179,7 +179,7 @@ class HotkeyButton(QPushButton):
         prevents accidentally binding plain Shift.
     """
 
-    combo_captured = pyqtSignal(list)
+    combo_captured = Signal(list)
 
     def __init__(self, combo: list[str], parent=None):
         super().__init__(combo_label(combo), parent)
@@ -249,7 +249,7 @@ class SettingsDialog(QDialog):
         super().__init__(parent)
         self.app_ctrl = app_ctrl
         config = app_ctrl.config
-        self.setWindowTitle("VoiceFlow Settings")
+        self.setWindowTitle("EchoScribe Settings")
         self.setMinimumWidth(380)
 
         # Match the on-screen overlay pill: same dark navy, light text, and
@@ -339,7 +339,7 @@ class SettingsDialog(QDialog):
         dict_row.addWidget(rem_btn)
         form.addRow("", dict_row)
 
-        self.startup_chk = QCheckBox("Start VoiceFlow with Windows")
+        self.startup_chk = QCheckBox("Start EchoScribe with Windows")
         self.startup_chk.setChecked(config["start_with_windows"])
         form.addRow("", self.startup_chk)
 
@@ -350,7 +350,7 @@ class SettingsDialog(QDialog):
         save_btn = QPushButton("Save")
         save_btn.setObjectName("saveBtn")
         save_btn.clicked.connect(self._save)
-        quit_btn = QPushButton("Quit VoiceFlow")
+        quit_btn = QPushButton("Quit EchoScribe")
         quit_btn.setObjectName("quitBtn")
         quit_btn.clicked.connect(self._quit_app)
         btn_row = QHBoxLayout()
@@ -372,7 +372,7 @@ class SettingsDialog(QDialog):
         hint.setStyleSheet("color: #8a8a96; font-size: 11px;")
         page_layout.addWidget(hint)
         about = QLabel(
-            "VoiceFlow — local, offline dictation. Hold the hotkey, speak, "
+            "EchoScribe — local, offline dictation. Hold the hotkey, speak, "
             "release. Powered by faster-whisper + Silero VAD."
         )
         about.setWordWrap(True)
@@ -446,8 +446,8 @@ class SettingsDialog(QDialog):
                 '<hr style="background-color:#3a3a44;">')
 
         html = f"""
-        <p {H}>&#127908;&nbsp; VoiceFlow</p>
-        <p {P}><span {HL}>VoiceFlow is a voice-to-text dictation tool that
+        <p {H}>&#127908;&nbsp; EchoScribe</p>
+        <p {P}><span {HL}>EchoScribe is a voice-to-text dictation tool that
         works in any app.</span> Hold a hotkey, speak, release — your words
         are transcribed, cleaned up, and typed into whatever has focus:
         emails, chats, documents, forms.</p>
@@ -457,7 +457,7 @@ class SettingsDialog(QDialog):
         audio or text ever leaves the machine. After the one-time model
         download it works fully offline. Settings, statistics, and the
         optional dictation history are stored in
-        <span {HL}>%APPDATA%\\VoiceFlow</span>.</p>
+        <span {HL}>%APPDATA%\\EchoScribe</span>.</p>
         {RULE}
 
         <p {H}>&#127911;&nbsp; How to dictate</p>
@@ -471,7 +471,7 @@ class SettingsDialog(QDialog):
         <p {H}>&#128218;&nbsp; Teaching it words</p>
         <p {P}>When a site name or technical term comes out wrong: correct it
         in your document, <span {HL}>select the corrected word</span>, and tap
-        <span {KEY}>{addw}</span>. VoiceFlow then steers transcription toward
+        <span {KEY}>{addw}</span>. EchoScribe then steers transcription toward
         that spelling and auto-repairs near-misses — every substitution is
         shown in a notification so you can check it.</p>
         {RULE}
@@ -498,7 +498,7 @@ class SettingsDialog(QDialog):
         <p {H}>&#128100;&nbsp; Creator</p>
         <p {P}>Created by <span {HL}>Gary van Niekerk</span>.</p>
         <p {MUTED}>Built with Python — faster-whisper, Silero VAD, and
-        PyQt6.</p>
+        PySide6.</p>
         """
 
         return html
@@ -571,7 +571,7 @@ class SettingsDialog(QDialog):
         self.app_ctrl.config["dictionary"] = []
         self.app_ctrl.config.save()
         self.dict_list.clear()
-        QMessageBox.information(self, "VoiceFlow", "All data has been reset.")
+        QMessageBox.information(self, "EchoScribe", "All data has been reset.")
 
     def _quit_app(self):
         self.reject()
@@ -593,7 +593,7 @@ class SettingsDialog(QDialog):
         import os
         if not os.path.exists(history_mod.path()):
             QMessageBox.information(
-                self, "VoiceFlow",
+                self, "EchoScribe",
                 "No history yet. Enable 'Keep dictation history' and dictate "
                 "something first."
             )
@@ -623,7 +623,7 @@ class SettingsDialog(QDialog):
         # a recording.
         if set(self.hotkey_btn.combo) == set(self.addword_btn.combo):
             QMessageBox.warning(
-                self, "VoiceFlow",
+                self, "EchoScribe",
                 "The dictation and add-word hotkeys must be different."
             )
             return
@@ -663,16 +663,16 @@ class SettingsDialog(QDialog):
 
 class Tray(QSystemTrayIcon):
     # Signals let worker threads change tray state safely (queued to GUI thread).
-    set_state = pyqtSignal(str)          # "idle" | "recording" | "processing"
-    notify = pyqtSignal(str, str)        # title, message
+    set_state = Signal(str)          # "idle" | "recording" | "processing"
+    notify = Signal(str, str)        # title, message
 
     def __init__(self, app_ctrl, parent=None):
         _build_icons()
         super().__init__(ICON_IDLE, parent)
         self.app_ctrl = app_ctrl
-        self.setToolTip("VoiceFlow — hold hotkey to dictate, click for settings")
+        self.setToolTip("EchoScribe — hold hotkey to dictate, click for settings")
         # Set app-wide window icon for dialogs, Alt-Tab, and taskbar.
-        from PyQt6.QtWidgets import QApplication
+        from PySide6.QtWidgets import QApplication
         ico_path = _find_ico()
         if ico_path:
             QApplication.instance().setWindowIcon(QIcon(ico_path))

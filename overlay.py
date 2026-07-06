@@ -19,9 +19,9 @@ Two properties are non-negotiable for a dictation overlay:
 import math
 import time
 
-from PyQt6.QtCore import Qt, QTimer
-from PyQt6.QtGui import QColor, QFont, QPainter, QPen
-from PyQt6.QtWidgets import QApplication, QWidget
+from PySide6.QtCore import Qt, QTimer
+from PySide6.QtGui import QColor, QFont, QPainter, QPen
+from PySide6.QtWidgets import QApplication, QWidget
 
 WIDTH, HEIGHT = 300, 86
 BAR_AREA_H = 52             # top zone for the waveform; label sits below it

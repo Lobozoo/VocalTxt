@@ -1,5 +1,5 @@
 """
-main.py — VoiceFlow entry point.
+main.py — EchoScribe entry point.
 
 Wires together: config → transcriber → recorder → hotkey listener → tray.
 
@@ -28,8 +28,8 @@ import logging
 import sys
 import threading
 
-from PyQt6.QtCore import QObject, QTimer, pyqtSignal
-from PyQt6.QtWidgets import QApplication, QProgressDialog
+from PySide6.QtCore import QObject, QTimer, Signal
+from PySide6.QtWidgets import QApplication, QProgressDialog
 
 import cleanup
 import dictionary
@@ -44,7 +44,7 @@ from tray import Tray
 
 
 class _LoaderSignals(QObject):
-    finished = pyqtSignal(bool, str)   # ok, error message
+    finished = Signal(bool, str)   # ok, error message
 
 
 class AppController:
@@ -113,7 +113,7 @@ class AppController:
                 f"Downloading Whisper '{size}' model from HuggingFace…\n"
                 "This only happens once.", None, 0, 0
             )
-            dlg.setWindowTitle("VoiceFlow — first run")
+            dlg.setWindowTitle("EchoScribe — first run")
             dlg.setCancelButton(None)
             dlg.setMinimumDuration(0)
             dlg.show()
@@ -124,7 +124,7 @@ class AppController:
             if dlg is not None:
                 dlg.close()
             if not ok:
-                self.tray.notify.emit("VoiceFlow", f"Model load failed — check logs")
+                self.tray.notify.emit("EchoScribe", f"Model load failed — check logs")
                 logging.error("Model preload failed: %s", err)
 
         sig.finished.connect(_close)
@@ -162,7 +162,7 @@ class AppController:
         except Exception:
             logging.exception("Failed to start recording")
             self.tray.set_state.emit("idle")
-            self.tray.notify.emit("VoiceFlow", "Could not open microphone — check logs")
+            self.tray.notify.emit("EchoScribe", "Could not open microphone — check logs")
 
     def _on_hotkey_up(self):
         """Also the hook thread; same rule — spawn and return."""
@@ -179,20 +179,20 @@ class AppController:
             )
             if not dictionary.valid_entry(text):
                 self.tray.notify.emit(
-                    "VoiceFlow", "Select a single word or short phrase first"
+                    "EchoScribe", "Select a single word or short phrase first"
                 )
                 return
             words = self.config["dictionary"]
             if text in words:
-                self.tray.notify.emit("VoiceFlow", f'"{text}" is already in the dictionary')
+                self.tray.notify.emit("EchoScribe", f'"{text}" is already in the dictionary')
                 return
             words.append(text)
             self.config.save()
             logging.info("Dictionary add: %r (%d entries)", text, len(words))
-            self.tray.notify.emit("VoiceFlow", f'Added "{text}" to dictionary')
+            self.tray.notify.emit("EchoScribe", f'Added "{text}" to dictionary')
         except Exception:
             logging.exception("Add-word failed")
-            self.tray.notify.emit("VoiceFlow", "Could not read selection — check logs")
+            self.tray.notify.emit("EchoScribe", "Could not read selection — check logs")
 
     def _process(self):
         # Never crash the tray app: everything is wrapped.
@@ -244,7 +244,7 @@ class AppController:
                 self.tray.notify.emit("Dictionary corrections", shown)
         except Exception:
             logging.exception("Transcription pipeline failed")
-            self.tray.notify.emit("VoiceFlow", "Transcription failed — check logs")
+            self.tray.notify.emit("EchoScribe", "Transcription failed — check logs")
         finally:
             self.tray.set_state.emit("idle")
             self._busy.release()
@@ -252,7 +252,7 @@ class AppController:
 
 def main():
     settings.setup_logging()
-    logging.info("VoiceFlow starting")
+    logging.info("EchoScribe starting")
 
     app = QApplication(sys.argv)
     app.setQuitOnLastWindowClosed(False)   # closing dialogs must not exit the tray app
