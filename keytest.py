@@ -1,11 +1,11 @@
 """
 keytest.py — diagnostic: prints exactly what pynput sees for every key event,
-both raw and canonicalised, plus the normalised name VocalTxt's hotkey.py
+both raw and canonicalised, plus the normalised name Talkloom's hotkey.py
 would use. Run it, hold Ctrl+Alt+Space, release, then press Esc to quit.
 """
 
 from pynput import keyboard
-from hotkey import _key_name  # reuse the exact same normalisation VocalTxt uses
+from hotkey import _key_name  # reuse the exact same normalisation Talkloom uses
 
 pressed = set()
 
@@ -15,7 +15,7 @@ def on_press(key):
     pressed.add(name)
     print(f"PRESS   raw={key!r:20} -> name={name!r:10}  currently down: {sorted(str(p) for p in pressed)}")
     if {"ctrl", "alt", "space"} <= pressed:
-        print(">>> COMBO DETECTED — VocalTxt would start recording here <<<")
+        print(">>> COMBO DETECTED — Talkloom would start recording here <<<")
 
 
 def on_release(key):

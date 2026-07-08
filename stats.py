@@ -1,7 +1,7 @@
 """
 stats.py — lightweight usage statistics.
 
-Stored in %APPDATA%\\VocalTxt\\stats.json, separate from config so settings
+Stored in %APPDATA%\\Talkloom\\stats.json, separate from config so settings
 stay clean. Thread-safe (record() is called from the pipeline worker thread,
 summary() from the GUI thread). Keeps all-time totals plus a rolling 30 days
 of per-day counts.

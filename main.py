@@ -1,5 +1,5 @@
 """
-main.py — VocalTxt entry point.
+main.py — Talkloom entry point.
 
 Wires together: config → transcriber → recorder → hotkey listener → tray.
 
@@ -113,7 +113,7 @@ class AppController:
                 f"Downloading Whisper '{size}' model from HuggingFace…\n"
                 "This only happens once.", None, 0, 0
             )
-            dlg.setWindowTitle("VocalTxt — first run")
+            dlg.setWindowTitle("Talkloom — first run")
             dlg.setCancelButton(None)
             dlg.setMinimumDuration(0)
             dlg.show()
@@ -124,7 +124,7 @@ class AppController:
             if dlg is not None:
                 dlg.close()
             if not ok:
-                self.tray.notify.emit("VocalTxt", f"Model load failed — check logs")
+                self.tray.notify.emit("Talkloom", f"Model load failed — check logs")
                 logging.error("Model preload failed: %s", err)
 
         sig.finished.connect(_close)
@@ -162,7 +162,7 @@ class AppController:
         except Exception:
             logging.exception("Failed to start recording")
             self.tray.set_state.emit("idle")
-            self.tray.notify.emit("VocalTxt", "Could not open microphone — check logs")
+            self.tray.notify.emit("Talkloom", "Could not open microphone — check logs")
 
     def _on_hotkey_up(self):
         """Also the hook thread; same rule — spawn and return."""
@@ -179,20 +179,20 @@ class AppController:
             )
             if not dictionary.valid_entry(text):
                 self.tray.notify.emit(
-                    "VocalTxt", "Select a single word or short phrase first"
+                    "Talkloom", "Select a single word or short phrase first"
                 )
                 return
             words = self.config["dictionary"]
             if text in words:
-                self.tray.notify.emit("VocalTxt", f'"{text}" is already in the dictionary')
+                self.tray.notify.emit("Talkloom", f'"{text}" is already in the dictionary')
                 return
             words.append(text)
             self.config.save()
             logging.info("Dictionary add: %r (%d entries)", text, len(words))
-            self.tray.notify.emit("VocalTxt", f'Added "{text}" to dictionary')
+            self.tray.notify.emit("Talkloom", f'Added "{text}" to dictionary')
         except Exception:
             logging.exception("Add-word failed")
-            self.tray.notify.emit("VocalTxt", "Could not read selection — check logs")
+            self.tray.notify.emit("Talkloom", "Could not read selection — check logs")
 
     def _process(self):
         # Never crash the tray app: everything is wrapped.
@@ -244,7 +244,7 @@ class AppController:
                 self.tray.notify.emit("Dictionary corrections", shown)
         except Exception:
             logging.exception("Transcription pipeline failed")
-            self.tray.notify.emit("VocalTxt", "Transcription failed — check logs")
+            self.tray.notify.emit("Talkloom", "Transcription failed — check logs")
         finally:
             self.tray.set_state.emit("idle")
             self._busy.release()
@@ -252,7 +252,7 @@ class AppController:
 
 def main():
     settings.setup_logging()
-    logging.info("VocalTxt starting")
+    logging.info("Talkloom starting")
 
     app = QApplication(sys.argv)
     app.setQuitOnLastWindowClosed(False)   # closing dialogs must not exit the tray app

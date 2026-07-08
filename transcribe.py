@@ -5,7 +5,7 @@ The model is loaded once and kept in memory; reloading per recording would add
 seconds of latency. Changing model size in Settings just marks the model dirty
 and it is reloaded lazily on the next transcription.
 
-Models are cached in %APPDATA%\VocalTxt\models\ — faster-whisper's built-in
+Models are cached in %APPDATA%\Talkloom\models\ — faster-whisper's built-in
 HuggingFace download kicks in automatically on first use of a given size.
 """
 

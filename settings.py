@@ -1,9 +1,9 @@
 r"""
 settings.py — configuration load/save, app data paths, Windows startup registry entry.
 
-Config lives at  %APPDATA%\VocalTxt\config.json
-Models cache at  %APPDATA%\VocalTxt\models\
-Log file at      %APPDATA%\VocalTxt\log.txt
+Config lives at  %APPDATA%\Talkloom\config.json
+Models cache at  %APPDATA%\Talkloom\models\
+Log file at      %APPDATA%\Talkloom\log.txt
 """
 
 import json
@@ -11,13 +11,13 @@ import logging
 import os
 import sys
 
-APP_NAME = "VocalTxt"
+APP_NAME = "Talkloom"
 
 # ---------------------------------------------------------------- paths -----
 
 def app_data_dir() -> str:
-    r"""%APPDATA%\VocalTxt (falls back to ~/.vocaltxt on non-Windows dev boxes)."""
-    base = os.environ.get("APPDATA") or os.path.expanduser("~/.vocaltxt")
+    r"""%APPDATA%\Talkloom (falls back to ~/.talkloom on non-Windows dev boxes)."""
+    base = os.environ.get("APPDATA") or os.path.expanduser("~/.talkloom")
     path = os.path.join(base, APP_NAME) if os.environ.get("APPDATA") else base
     os.makedirs(path, exist_ok=True)
     return path
