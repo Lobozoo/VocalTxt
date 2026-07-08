@@ -61,10 +61,10 @@ SPINNER_FRAMES: list[QIcon] = []
 
 
 def _find_ico() -> str | None:
-    """Locate echoscribe.ico: next to the script, or inside PyInstaller bundle."""
+    """Locate vocaltxt.ico: next to the script, or inside PyInstaller bundle."""
     import sys, os
     for base in (getattr(sys, "_MEIPASS", ""), os.path.dirname(os.path.abspath(__file__))):
-        p = os.path.join(base, "echoscribe.ico")
+        p = os.path.join(base, "vocaltxt.ico")
         if os.path.exists(p):
             return p
     return None
@@ -249,7 +249,7 @@ class SettingsDialog(QDialog):
         super().__init__(parent)
         self.app_ctrl = app_ctrl
         config = app_ctrl.config
-        self.setWindowTitle("EchoScribe Settings")
+        self.setWindowTitle("VocalTxt Settings")
         self.setMinimumWidth(380)
 
         # Match the on-screen overlay pill: same dark navy, light text, and
@@ -339,7 +339,7 @@ class SettingsDialog(QDialog):
         dict_row.addWidget(rem_btn)
         form.addRow("", dict_row)
 
-        self.startup_chk = QCheckBox("Start EchoScribe with Windows")
+        self.startup_chk = QCheckBox("Start VocalTxt with Windows")
         self.startup_chk.setChecked(config["start_with_windows"])
         form.addRow("", self.startup_chk)
 
@@ -350,7 +350,7 @@ class SettingsDialog(QDialog):
         save_btn = QPushButton("Save")
         save_btn.setObjectName("saveBtn")
         save_btn.clicked.connect(self._save)
-        quit_btn = QPushButton("Quit EchoScribe")
+        quit_btn = QPushButton("Quit VocalTxt")
         quit_btn.setObjectName("quitBtn")
         quit_btn.clicked.connect(self._quit_app)
         btn_row = QHBoxLayout()
@@ -372,7 +372,7 @@ class SettingsDialog(QDialog):
         hint.setStyleSheet("color: #8a8a96; font-size: 11px;")
         page_layout.addWidget(hint)
         about = QLabel(
-            "EchoScribe — local, offline dictation. Hold the hotkey, speak, "
+            "VocalTxt — local, offline dictation. Hold the hotkey, speak, "
             "release. Powered by faster-whisper + Silero VAD."
         )
         about.setWordWrap(True)
@@ -446,8 +446,8 @@ class SettingsDialog(QDialog):
                 '<hr style="background-color:#3a3a44;">')
 
         html = f"""
-        <p {H}>&#127908;&nbsp; EchoScribe</p>
-        <p {P}><span {HL}>EchoScribe is a voice-to-text dictation tool that
+        <p {H}>&#127908;&nbsp; VocalTxt</p>
+        <p {P}><span {HL}>VocalTxt is a voice-to-text dictation tool that
         works in any app.</span> Hold a hotkey, speak, release — your words
         are transcribed, cleaned up, and typed into whatever has focus:
         emails, chats, documents, forms.</p>
@@ -457,7 +457,7 @@ class SettingsDialog(QDialog):
         audio or text ever leaves the machine. After the one-time model
         download it works fully offline. Settings, statistics, and the
         optional dictation history are stored in
-        <span {HL}>%APPDATA%\\EchoScribe</span>.</p>
+        <span {HL}>%APPDATA%\\VocalTxt</span>.</p>
         {RULE}
 
         <p {H}>&#127911;&nbsp; How to dictate</p>
@@ -471,7 +471,7 @@ class SettingsDialog(QDialog):
         <p {H}>&#128218;&nbsp; Teaching it words</p>
         <p {P}>When a site name or technical term comes out wrong: correct it
         in your document, <span {HL}>select the corrected word</span>, and tap
-        <span {KEY}>{addw}</span>. EchoScribe then steers transcription toward
+        <span {KEY}>{addw}</span>. VocalTxt then steers transcription toward
         that spelling and auto-repairs near-misses — every substitution is
         shown in a notification so you can check it.</p>
         {RULE}
@@ -571,7 +571,7 @@ class SettingsDialog(QDialog):
         self.app_ctrl.config["dictionary"] = []
         self.app_ctrl.config.save()
         self.dict_list.clear()
-        QMessageBox.information(self, "EchoScribe", "All data has been reset.")
+        QMessageBox.information(self, "VocalTxt", "All data has been reset.")
 
     def _quit_app(self):
         self.reject()
@@ -593,7 +593,7 @@ class SettingsDialog(QDialog):
         import os
         if not os.path.exists(history_mod.path()):
             QMessageBox.information(
-                self, "EchoScribe",
+                self, "VocalTxt",
                 "No history yet. Enable 'Keep dictation history' and dictate "
                 "something first."
             )
@@ -623,7 +623,7 @@ class SettingsDialog(QDialog):
         # a recording.
         if set(self.hotkey_btn.combo) == set(self.addword_btn.combo):
             QMessageBox.warning(
-                self, "EchoScribe",
+                self, "VocalTxt",
                 "The dictation and add-word hotkeys must be different."
             )
             return
@@ -670,7 +670,7 @@ class Tray(QSystemTrayIcon):
         _build_icons()
         super().__init__(ICON_IDLE, parent)
         self.app_ctrl = app_ctrl
-        self.setToolTip("EchoScribe — hold hotkey to dictate, click for settings")
+        self.setToolTip("VocalTxt — hold hotkey to dictate, click for settings")
         # Set app-wide window icon for dialogs, Alt-Tab, and taskbar.
         from PySide6.QtWidgets import QApplication
         ico_path = _find_ico()

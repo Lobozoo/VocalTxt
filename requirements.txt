@@ -1,4 +1,4 @@
-# EchoScribe — Python 3.11+
+# VocalTxt — Python 3.11+
 faster-whisper>=1.0.0
 onnxruntime>=1.16      # runs the bundled Silero VAD model (also used by faster-whisper)
 sounddevice>=0.4.6

@@ -1,9 +1,9 @@
 r"""
 settings.py — configuration load/save, app data paths, Windows startup registry entry.
 
-Config lives at  %APPDATA%\EchoScribe\config.json
-Models cache at  %APPDATA%\EchoScribe\models\
-Log file at      %APPDATA%\EchoScribe\log.txt
+Config lives at  %APPDATA%\VocalTxt\config.json
+Models cache at  %APPDATA%\VocalTxt\models\
+Log file at      %APPDATA%\VocalTxt\log.txt
 """
 
 import json
@@ -11,13 +11,13 @@ import logging
 import os
 import sys
 
-APP_NAME = "EchoScribe"
+APP_NAME = "VocalTxt"
 
 # ---------------------------------------------------------------- paths -----
 
 def app_data_dir() -> str:
-    r"""%APPDATA%\EchoScribe (falls back to ~/.echoscribe on non-Windows dev boxes)."""
-    base = os.environ.get("APPDATA") or os.path.expanduser("~/.echoscribe")
+    r"""%APPDATA%\VocalTxt (falls back to ~/.vocaltxt on non-Windows dev boxes)."""
+    base = os.environ.get("APPDATA") or os.path.expanduser("~/.vocaltxt")
     path = os.path.join(base, APP_NAME) if os.environ.get("APPDATA") else base
     os.makedirs(path, exist_ok=True)
     return path

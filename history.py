@@ -2,7 +2,7 @@
 history.py — optional dictation transcript history.
 
 OFF by default (config "keep_history"): when enabled, every successful
-dictation is appended to %APPDATA%\\EchoScribe\\history.txt with a timestamp.
+dictation is appended to %APPDATA%\\VocalTxt\\history.txt with a timestamp.
 Privacy note: this is a plaintext record of everything dictated — the
 feature exists behind a deliberate opt-in for exactly that reason.
 

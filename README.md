@@ -1,4 +1,4 @@
-# EchoScribe
+# VocalTxt
 
 **Local, offline voice-to-text dictation for Windows.**
 
@@ -34,7 +34,7 @@ Built by **Gary van Niekerk**.
 **2. Clone or download this repo**, then in a terminal:
 
 ```
-cd EchoScribe
+cd VocalTxt
 py -3.13 -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
@@ -49,7 +49,7 @@ python main.py
 ```
 
 First launch downloads the Whisper `base` model (~145 MB) to
-`%APPDATA%\EchoScribe\models` — one time only. On corporate machines with
+`%APPDATA%\VocalTxt\models` — one time only. On corporate machines with
 TLS-inspection proxies (Zscaler etc.), this is handled automatically via
 `truststore`.
 
@@ -65,7 +65,7 @@ With the venv activated:
 build.bat
 ```
 
-Output: `dist\EchoScribe.exe` (~300–400 MB). The `--onefile` build unpacks to
+Output: `dist\VocalTxt.exe` (~300–400 MB). The `--onefile` build unpacks to
 `%TEMP%` on first launch (10–30 s) — subsequent launches are instant.
 
 > **Corporate AV quarantining the EXE?** Skip packaging entirely — create a
@@ -82,7 +82,7 @@ shows *Listening…* (red bars respond to your voice) then *Transcribing…*
 (blue wave). Nothing pastes if you said nothing.
 
 ### Custom dictionary
-Teach EchoScribe site names and technical terms it would otherwise mangle:
+Teach VocalTxt site names and technical terms it would otherwise mangle:
 
 1. Dictate something — notice a word is wrong
 2. Correct it in your document
@@ -90,7 +90,7 @@ Teach EchoScribe site names and technical terms it would otherwise mangle:
 4. Tap the **add-word hotkey** (default: **Ctrl+Alt+A**)
 5. A notification confirms it has been added
 
-From the next dictation, EchoScribe biases Whisper toward that spelling and
+From the next dictation, VocalTxt biases Whisper toward that spelling and
 auto-corrects near-misses (e.g. *"crook hill t10"* → *"Crookhill T10"*).
 Every substitution triggers a tray notification so you can verify it.
 Manage the word list in Settings → Dictionary.
@@ -116,11 +116,11 @@ the *Reset all data* button (also clears log and history).
 
 | File | Location | Contents |
 |---|---|---|
-| `config.json` | `%APPDATA%\EchoScribe\` | Settings and dictionary |
-| `stats.json` | `%APPDATA%\EchoScribe\` | Usage statistics |
-| `log.txt` | `%APPDATA%\EchoScribe\` | Events, errors, correction audit (rotates at 1 MB) |
-| `history.txt` | `%APPDATA%\EchoScribe\` | Dictation transcripts — opt-in only |
-| Whisper models | `%APPDATA%\EchoScribe\models\` | Downloaded once from HuggingFace |
+| `config.json` | `%APPDATA%\VocalTxt\` | Settings and dictionary |
+| `stats.json` | `%APPDATA%\VocalTxt\` | Usage statistics |
+| `log.txt` | `%APPDATA%\VocalTxt\` | Events, errors, correction audit (rotates at 1 MB) |
+| `history.txt` | `%APPDATA%\VocalTxt\` | Dictation transcripts — opt-in only |
+| Whisper models | `%APPDATA%\VocalTxt\models\` | Downloaded once from HuggingFace |
 
 No telemetry. No network traffic after the initial model download.
 
@@ -138,7 +138,7 @@ This prints every key event as pynput sees it. Press your hotkey combo and
 confirm the combo-detected line appears. Useful for diagnosing conflicts with
 corporate endpoint software.
 
-Errors and events are logged to `%APPDATA%\EchoScribe\log.txt` (accessible
+Errors and events are logged to `%APPDATA%\VocalTxt\log.txt` (accessible
 via Settings → Statistics → *Open log*).
 
 ---
@@ -161,7 +161,7 @@ via Settings → Statistics → *Open log*).
 | `history.py` | Optional dictation history with size cap |
 | `silero_vad.onnx` | Bundled Silero VAD model (MIT licence, 2 MB) |
 | `keytest.py` | Hotkey diagnostic tool |
-| `build.bat` | PyInstaller build script → `dist\EchoScribe.exe` |
+| `build.bat` | PyInstaller build script → `dist\VocalTxt.exe` |
 
 ---
 
